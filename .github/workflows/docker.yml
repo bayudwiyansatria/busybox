@@ -1,0 +1,43 @@
+#name: Containerization
+#on:
+#  workflow_call:
+#    inputs:
+#      DOCKER_REGISTRY:
+#        type: string
+#        required: true
+#      DOCKER_USERNAME:
+#        type: string
+#        required: true
+#    secrets:
+#      DOCKER_PASSWORD:
+#        required: true
+#jobs:
+#  docker:
+#    name: Docker
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        java-version: [11.0.3]
+#        operating-system: [ubuntu-latest]
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v2
+#    - name: Download artifacts
+#      uses: actions/download-artifact@v1
+#      with:
+#        name: build
+#        path: target/
+#    - name: Login to Registry
+#      uses: docker/login-action@v1
+#      with:
+#        registry: ${{ inputs.DOCKER_REGISTRY }}
+#        username: ${{ inputs.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+#    - name: Tags
+#      id: tags
+#      run: |
+#        echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
+#    - name: Build
+#      run: |
+#        docker build -t ${{ inputs.DOCKER_REGISTRY }}/${{ inputs.DOCKER_USERNAME }}/${DOCKER_IMAGE_NAME}:sha-${{ steps.tags.outputs.sha_short }} -f docker/Dockerfile-ci .
+#        docker push ghcr.io/bgsi-registry/satumedis-fhir-bridge-service:sha-${{ steps.tags.outputs.sha_short }}

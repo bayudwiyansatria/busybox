@@ -1,0 +1,25 @@
+FROM debian:buster AS base
+LABEL maintainer="Bayu Dwiyan Satria <bayudwiyansatria@gmail.com>"
+WORKDIR /usr/local/bin
+
+FROM base AS build
+WORKDIR /bin
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    curl \
+    git
+
+COPY scripts .
+
+ARG GETTEXT_VERSION=0.21.1
+RUN gettext.sh ${GETTEXT_VERSION}
+
+RUN rm -rf *.sh
+
+FROM base AS release
+
+COPY --from=build /bin /usr/local/bin
+
+CMD ["bash"]
