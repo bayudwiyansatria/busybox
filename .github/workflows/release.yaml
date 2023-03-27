@@ -1,0 +1,14 @@
+name: Main
+on:
+  push:
+    branch:
+    - main
+jobs:
+  docker:
+    name: Docker
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
