@@ -1,0 +1,31 @@
+name: PostgreSQL
+on:
+  workflow_dispatch:
+    inputs:
+      # Please Refer to: https://www.postgresql.org/support/versioning/
+      VERSION:
+        type: string
+        required: true
+        default: '14'
+  workflow_call:
+    inputs:
+      DOCKER_REGISTRY:
+        type: string
+        required: true
+      DOCKER_USERNAME:
+        type: string
+        required: true
+    secrets:
+      DOCKER_PASSWORD:
+        required: true
+jobs:
+  docker:
+    name: Docker
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+      MODULES: postgresql
+      TAG: postgresql-client-${{ github.event.inputs.VERSION }}
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

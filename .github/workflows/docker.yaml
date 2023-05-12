@@ -2,10 +2,22 @@ name: Containerization
 on:
   workflow_call:
     inputs:
+      #-----------------------------------------------------------------------------------------------------------------
+      # Container Registry
+      #-----------------------------------------------------------------------------------------------------------------
       DOCKER_REGISTRY:
         type: string
         required: true
       DOCKER_USERNAME:
+        type: string
+        required: true
+      #-----------------------------------------------------------------------------------------------------------------
+      # Parameters
+      #-----------------------------------------------------------------------------------------------------------------
+      MODULES:
+        type: string
+        required: false
+      TAG:
         type: string
         required: true
     secrets:
@@ -19,15 +31,22 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
     steps:
+    #-------------------------------------------------------------------------------------------------------------------
+    # Checkout Repository
+    #-------------------------------------------------------------------------------------------------------------------
     - name: Checkout
       uses: actions/checkout@v2
+    #-------------------------------------------------------------------------------------------------------------------
+    # Login Container Repository
+    #-------------------------------------------------------------------------------------------------------------------
     - name: Login to Registry
       uses: docker/login-action@v1
       with:
         registry: ${{ inputs.DOCKER_REGISTRY }}
         username: ${{ inputs.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build
-      run: |
-        docker build -t ${{ inputs.DOCKER_REGISTRY }}/${{ github.repository }}:latest .
-        docker push ${{ inputs.DOCKER_REGISTRY }}/${{ github.repository }}:latest
+    #-------------------------------------------------------------------------------------------------------------------
+    # Containerization
+    #-------------------------------------------------------------------------------------------------------------------
+    - name: Containerization
+      run: etc/bin/release.sh ${{ inputs.DOCKER_REGISTRY }} ${{ github.repository }} ${{ inputs.TAG }} ${{ inputs.MODULES }}

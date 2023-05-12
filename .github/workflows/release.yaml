@@ -1,4 +1,4 @@
-name: Main
+name: Release
 on:
   push:
     branch:
@@ -10,5 +10,6 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
+      TAG: latest
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
