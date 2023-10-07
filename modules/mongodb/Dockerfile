@@ -1,4 +1,4 @@
-FROM bayudwiyansatria/busybox:latest as base
+FROM bayudwiyansatria/busybox:latest AS base
 LABEL maintainer="Bayu Dwiyan Satria <bayudwiyansatria@gmail.com>"
 WORKDIR /app
 

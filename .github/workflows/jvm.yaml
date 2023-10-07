@@ -2,11 +2,13 @@ name: JVM
 on:
   workflow_dispatch:
     inputs:
-      # Please Refer to: https://www.postgresql.org/support/versioning/
+      #-----------------------------------------------------------------------------------------------------------------
+      # Java
+      #-----------------------------------------------------------------------------------------------------------------
       VERSION:
         type: string
         required: true
-        default: '11.0.17'
+        default: '21'
   workflow_call:
     inputs:
       DOCKER_REGISTRY:
@@ -19,6 +21,20 @@ on:
       DOCKER_PASSWORD:
         required: true
 jobs:
+  #-------------------------------------------------------------------------------------------------------------------
+  # Containerization
+  #-------------------------------------------------------------------------------------------------------------------
+  docker-latest:
+    if: ${{ github.event.inputs.VERSION }} == '21'
+    name: Docker Latest
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+      MODULES: jvm
+      TAG: java-latest
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
     name: Docker
     uses: ./.github/workflows/docker.yaml

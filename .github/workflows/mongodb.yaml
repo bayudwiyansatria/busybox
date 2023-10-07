@@ -2,7 +2,9 @@ name: MongoDB
 on:
   workflow_dispatch:
     inputs:
-      # Please Refer to: https://www.postgresql.org/support/versioning/
+      #-----------------------------------------------------------------------------------------------------------------
+      # MongoDB
+      #-----------------------------------------------------------------------------------------------------------------
       VERSION:
         type: string
         required: true
@@ -19,7 +21,22 @@ on:
       DOCKER_PASSWORD:
         required: true
 jobs:
+  #-------------------------------------------------------------------------------------------------------------------
+  # Containerization
+  #-------------------------------------------------------------------------------------------------------------------
+  docker-latest:
+    if: ${{ github.event.inputs.VERSION }} == '5.0'
+    name: Docker Latest
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+      MODULES: mongodb
+      TAG: mongodb-client-latest
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
+    if: ${{ github.event.inputs.VERSION }} == '5.0'
     name: Docker
     uses: ./.github/workflows/docker.yaml
     with:

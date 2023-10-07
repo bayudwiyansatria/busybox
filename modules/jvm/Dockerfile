@@ -1,8 +1,8 @@
-FROM bayudwiyansatria/busybox:latest as base
+FROM bayudwiyansatria/busybox:latest AS base
 LABEL maintainer="Bayu Dwiyan Satria <bayudwiyansatria@gmail.com>"
 WORKDIR /app
 
-ARG VERSION="11.0.17"
+ARG VERSION="21"
 
 SHELL ["/bin/bash", "-c"]
 
