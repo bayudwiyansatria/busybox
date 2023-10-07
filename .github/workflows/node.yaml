@@ -1,0 +1,47 @@
+name: Node
+on:
+  workflow_dispatch:
+    inputs:
+      #-----------------------------------------------------------------------------------------------------------------
+      # Node
+      #-----------------------------------------------------------------------------------------------------------------
+      VERSION:
+        type: string
+        required: true
+        default: '17.1.0'
+  workflow_call:
+    inputs:
+      DOCKER_REGISTRY:
+        type: string
+        required: true
+      DOCKER_USERNAME:
+        type: string
+        required: true
+    secrets:
+      DOCKER_PASSWORD:
+        required: true
+jobs:
+  #-------------------------------------------------------------------------------------------------------------------
+  # Containerization
+  #-------------------------------------------------------------------------------------------------------------------
+  docker-latest:
+    if: ${{ github.event.inputs.VERSION }} == '17.1.0'
+    name: Docker Latest
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+      MODULES: node
+      TAG: node-latest
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  docker:
+    name: Docker
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_USERNAME: ${{ github.repository_owner }}
+      MODULES: node
+      TAG: node-${{ github.event.inputs.VERSION }}
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
