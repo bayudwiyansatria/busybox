@@ -32,7 +32,8 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: gradle
-      TAG: gradle-latest
+      VERSION: ${{ github.event.inputs.VERSION }}
+      TAG: gradle-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -42,6 +43,7 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: gradle
+      VERSION: ${{ github.event.inputs.VERSION }}
       TAG: gradle-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

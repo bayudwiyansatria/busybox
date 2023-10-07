@@ -17,6 +17,9 @@ on:
       MODULES:
         type: string
         required: false
+      VERSION:
+        type: string
+        required: false
       TAG:
         type: string
         required: true
@@ -49,4 +52,4 @@ jobs:
     # Containerization
     #-------------------------------------------------------------------------------------------------------------------
     - name: Containerization
-      run: etc/bin/release.sh ${{ inputs.DOCKER_REGISTRY }} ${{ github.repository }} ${{ inputs.TAG }} ${{ inputs.MODULES }}
+      run: etc/bin/release.sh ${{ inputs.DOCKER_REGISTRY }} ${{ github.repository }} ${{ inputs.TAG }} ${{ inputs.VERSION }} ${{ inputs.MODULES }}

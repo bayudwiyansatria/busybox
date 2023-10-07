@@ -31,8 +31,9 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: mongodb
-      TAG: mongodb-client-latest
+      MODULES: mongodb-client
+      VERSION: ${{ github.event.inputs.VERSION }}
+      TAG: mongodb-client-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -42,7 +43,8 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: mongodb
+      MODULES: mongodb-client
+      VERSION: ${{ github.event.inputs.VERSION }}
       TAG: mongodb-client-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

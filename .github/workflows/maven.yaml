@@ -25,14 +25,15 @@ jobs:
   # Containerization
   #-------------------------------------------------------------------------------------------------------------------
   docker-latest:
-    if: ${{ github.event.inputs.VERSION }} == '3.9.5'
+    if: github.event.inputs.VERSION == '3.9.5'
     name: Docker Latest
     uses: ./.github/workflows/docker.yaml
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: maven
-      TAG: maven-latest
+      VERSION: ${{ github.event.inputs.VERSION }}
+      TAG: maven-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -42,6 +43,7 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: maven
+      VERSION: ${{ github.event.inputs.VERSION }}
       TAG: maven-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

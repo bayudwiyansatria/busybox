@@ -32,8 +32,9 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: postgresql
-      TAG: postgresql-client-latest
+      MODULES: postgresql-client
+      VERSION: ${{ github.event.inputs.VERSION }}
+      TAG: postgresql-client-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -42,7 +43,8 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: postgresql
+      MODULES: postgresql-client
+      VERSION: ${{ github.event.inputs.VERSION }}
       TAG: postgresql-client-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

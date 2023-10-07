@@ -32,7 +32,8 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: jvm
-      TAG: java-latest
+      VERSION: ${{ github.event.inputs.VERSION }}
+      TAG: java-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -42,6 +43,7 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
       MODULES: jvm
+      VERSION: ${{ github.event.inputs.VERSION }}
       TAG: java-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
