@@ -1,14 +1,14 @@
-name: Maven
+name: Gradle
 on:
   workflow_dispatch:
     inputs:
       #-----------------------------------------------------------------------------------------------------------------
-      # Maven
+      # Gradle
       #-----------------------------------------------------------------------------------------------------------------
       VERSION:
         type: string
         required: true
-        default: '3.9.5'
+        default: '8.4'
   workflow_call:
     inputs:
       DOCKER_REGISTRY:
@@ -25,14 +25,14 @@ jobs:
   # Containerization
   #-------------------------------------------------------------------------------------------------------------------
   docker-latest:
-    if: ${{ github.event.inputs.VERSION }} == '3.9.5'
+    if: ${{ github.event.inputs.VERSION }} == '8.4'
     name: Docker Latest
     uses: ./.github/workflows/docker.yaml
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: maven
-      TAG: maven-latest
+      MODULES: gradle
+      TAG: gradle-latest
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
@@ -41,7 +41,7 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: maven
-      TAG: maven-${{ github.event.inputs.VERSION }}
+      MODULES: gradle
+      TAG: gradle-${{ github.event.inputs.VERSION }}
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
