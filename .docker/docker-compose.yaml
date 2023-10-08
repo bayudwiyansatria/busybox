@@ -1,0 +1,15 @@
+name: busybox
+services:
+  busybox:
+    image: bayudwiyansatria/busybox:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: busybox
+    ports: []
+    volumes: []
+    networks:
+    - busybox
+networks:
+  busybox:
+    name: busybox

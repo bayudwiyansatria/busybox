@@ -7,6 +7,7 @@
 tmp/
 
 # User-specific files
+compose-dev.yaml
 *.suo
 *.user
 *.userosscache
