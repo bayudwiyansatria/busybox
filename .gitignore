@@ -5,6 +5,7 @@
 
 # User-specific directory
 tmp/
+_book/
 
 # User-specific files
 compose-dev.yaml

@@ -1,0 +1,7 @@
+{
+  "title": "Busybox",
+  "author": "Bayu Dwiyan Satria",
+  "description": "Documentation for Busybox",
+  "language": "en",
+  "plugins": ["-sharing", "-fontsettings", "highlight", "search"]
+}

@@ -7,43 +7,38 @@ on:
       #-----------------------------------------------------------------------------------------------------------------
       VERSION:
         type: string
+        description: "Please Refer to: https://gradle.org/releases/"
         required: true
-        default: '8.4'
-  workflow_call:
-    inputs:
-      DOCKER_REGISTRY:
-        type: string
-        required: true
-      DOCKER_USERNAME:
-        type: string
-        required: true
-    secrets:
-      DOCKER_PASSWORD:
-        required: true
+        default: "8.4"
 jobs:
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   # Containerization
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   docker-latest:
-    if: ${{ github.event.inputs.VERSION }} == '8.4'
+    if: ${{ inputs.VERSION == '8.4' }}
     name: Docker Latest
-    uses: ./.github/workflows/docker.yaml
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: gradle
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: gradle-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/gradle/Dockerfile
+      DOCKER_IMAGE_TAG: gradle-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
-    name: Docker
-    uses: ./.github/workflows/docker.yaml
+    if: ${{ inputs.VERSION != '8.4' }}
+    name: Build
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: gradle
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: gradle-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/gradle/Dockerfile
+      DOCKER_IMAGE_TAG: gradle-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

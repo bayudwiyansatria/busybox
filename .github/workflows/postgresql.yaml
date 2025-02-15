@@ -8,43 +8,38 @@ on:
       # Please Refer to: https://www.postgresql.org/support/versioning/
       VERSION:
         type: string
+        description: 'PostgreSQL Version'
         required: true
         default: '14'
-  workflow_call:
-    inputs:
-      DOCKER_REGISTRY:
-        type: string
-        required: true
-      DOCKER_USERNAME:
-        type: string
-        required: true
-    secrets:
-      DOCKER_PASSWORD:
-        required: true
 jobs:
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   # Containerization
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   docker-latest:
-    if: ${{ github.event.inputs.VERSION }} == '14'
+    if: ${{ inputs.VERSION == '14' }} 
     name: Docker Latest
-    uses: ./.github/workflows/docker.yaml
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: postgresql-client
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: postgresql-client-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/postgresql-client/Dockerfile
+      DOCKER_IMAGE_TAG: postgresql-client-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
-    name: Docker
-    uses: ./.github/workflows/docker.yaml
+    if: ${{ inputs.VERSION != '14' }} 
+    name: Build
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: postgresql-client
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: postgresql-client-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/postgresql-client/Dockerfile
+      DOCKER_IMAGE_TAG: postgresql-client-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

@@ -1,0 +1,5 @@
+# User-specific directory
+
+# User-specific files
+**/*.yml
+**/*.yaml

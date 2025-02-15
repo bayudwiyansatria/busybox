@@ -7,43 +7,38 @@ on:
       #-----------------------------------------------------------------------------------------------------------------
       VERSION:
         type: string
+        description: "Maven Version"
         required: true
-        default: '3.9.5'
-  workflow_call:
-    inputs:
-      DOCKER_REGISTRY:
-        type: string
-        required: true
-      DOCKER_USERNAME:
-        type: string
-        required: true
-    secrets:
-      DOCKER_PASSWORD:
-        required: true
+        default: "3.9.5"
 jobs:
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   # Containerization
-  #-------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------------------------
   docker-latest:
-    if: github.event.inputs.VERSION == '3.9.5'
+    if: ${{ inputs.VERSION == '3.9.5' }}
     name: Docker Latest
-    uses: ./.github/workflows/docker.yaml
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: maven
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: maven-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/maven/Dockerfile
+      DOCKER_IMAGE_TAG: maven-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker:
-    name: Docker
-    uses: ./.github/workflows/docker.yaml
+    if: ${{ inputs.VERSION != '3.9.5' }}
+    name: Build
+    uses: bayudwiyansatria/.github/.github/workflows/build-docker.yml@master
     with:
       DOCKER_REGISTRY: docker.io
-      DOCKER_USERNAME: ${{ github.repository_owner }}
-      MODULES: maven
-      VERSION: ${{ github.event.inputs.VERSION }}
-      TAG: maven-${{ github.event.inputs.VERSION }}
+      DOCKER_FILE: modules/maven/Dockerfile
+      DOCKER_IMAGE_TAG: maven-${{ inputs.VERSION }}
+      DOCKER_PUSH_ENABLED: true
+      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      ARTIFACT_ENABLED: false
     secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
