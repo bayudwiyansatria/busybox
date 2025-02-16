@@ -21,9 +21,9 @@ jobs:
     with:
       DOCKER_REGISTRY: docker.io
       DOCKER_FILE: modules/jvm/Dockerfile
-      DOCKER_IMAGE_TAG: java-${{ inputs.VERSION }}
-      DOCKER_PUSH_ENABLED: true
-      DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      DOCKER_IMAGE_TAG: java-latest
+      DOCKER_BUILD_ARG: VERSION=latest
+      PUSH_ENABLED: true
       ARTIFACT_ENABLED: false
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -36,8 +36,8 @@ jobs:
       DOCKER_REGISTRY: docker.io
       DOCKER_FILE: modules/jvm/Dockerfile
       DOCKER_IMAGE_TAG: java-${{ inputs.VERSION }}
-      DOCKER_PUSH_ENABLED: true
       DOCKER_BUILD_ARG: VERSION=${{ inputs.VERSION }}
+      PUSH_ENABLED: true
       ARTIFACT_ENABLED: false
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
